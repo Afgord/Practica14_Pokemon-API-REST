@@ -1,13 +1,11 @@
 
-# Práctica 14 - Pokémon API REST
+# Práctica 15 - Validaciones
 
 - Christian Lafayette Martinez
 - 00000010383
 - Aplicaciones Web
 - LuMi 18:00~19:30 hrs
 - Mtro. Martín Guadalupe Bernal Lugo
-
-## Práctica 15 - Validaciones
 
 Esta práctica amplía la API REST de Pokémon desarrollada en la
 Práctica 14, incorporando validaciones de datos y manejo
