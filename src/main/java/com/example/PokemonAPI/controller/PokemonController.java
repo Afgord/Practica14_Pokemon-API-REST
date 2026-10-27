@@ -4,6 +4,7 @@ package com.example.PokemonAPI.controller;
 import com.example.PokemonAPI.model.Pokemon;
 import com.example.PokemonAPI.service.PokemonService;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,16 +31,17 @@ public class PokemonController {
     }
 
     // GET individual: devuelve 404 si el identificador no existe.
+
     @GetMapping("/{id}")
     public ResponseEntity<Pokemon> obtenerPorId(@PathVariable Long id) {
-        return pokemonService.obtenerPorId(id)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        Pokemon pokemon = pokemonService.obtenerPorId(id);
+        return ResponseEntity.ok(pokemon);
     }
+
 
     // POST: recibe el JSON y responde 201 cuando se crea el recurso.
     @PostMapping
-    public ResponseEntity<Pokemon> crear(@RequestBody Pokemon pokemon) {
+    public ResponseEntity<Pokemon> crear(@Valid @RequestBody Pokemon pokemon) {
         Pokemon nuevoPokemon = pokemonService.crear(pokemon);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(nuevoPokemon);
@@ -49,7 +51,7 @@ public class PokemonController {
     @PutMapping("/{id}")
     public ResponseEntity<Pokemon> actualizar(
             @PathVariable Long id,
-            @RequestBody Pokemon pokemon) {
+            @Valid @RequestBody Pokemon pokemon) {
 
         return pokemonService.actualizar(id, pokemon)
                 .map(ResponseEntity::ok)

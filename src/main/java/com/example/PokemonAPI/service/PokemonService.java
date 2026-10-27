@@ -8,6 +8,7 @@ import com.example.PokemonAPI.model.Pokemon;
 import java.util.List;
 import java.util.Optional;
 import java.util.Map;
+import com.example.PokemonAPI.exception.ResourceNotFoundException;
 
 /**
  * Capa de servicio: concentra las operaciones CRUD y comunica
@@ -26,16 +27,19 @@ public class PokemonService {
         return pokemonRepository.findAll();
     }
 
+
     /**
-     * Busca un Pokemon mediante su id.
+     * Busca un Pokemon mediante su ID.
      *
-     * Utilizamos Optional porque no podemos garantizar
-     * que el registro solicitado exista en la base de datos.
-     * De esta manera, el controlador podrá responder con
-     * un código HTTP 404 cuando no encuentre al Pokemon.
+     * Si el registro no existe, lanza una excepcion personalizada
+     * que sera interceptada por GlobalExceptionHandler
+     * para devolver HTTP 404 con nuestro ErrorDTO.
      */
-    public Optional<Pokemon> obtenerPorId(Long id) {
-        return pokemonRepository.findById(id);
+    public Pokemon obtenerPorId(Long id) {
+        return pokemonRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "No se encontro el Pokemon con ID: " + id
+                ));
     }
 
     /**
